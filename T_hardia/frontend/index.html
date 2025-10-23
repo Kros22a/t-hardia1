@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Hardia - Hardware Information Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Canvas para animación 3D -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <header class="animated-header">
+            <h1 class="glitch-text">T-Hardia</h1>
+            <p class="subtitle">Plataforma Avanzada de Información Hardware</p>
+        </header>
+        
+        <nav class="main-nav animated-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link active">Inicio</a></li>
+                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
+                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <section class="hero-section fade-in">
+                <div class="hero-content">
+                    <h2>Explora el Mundo del Hardware</h2>
+                    <p>Obtén información detallada, comparaciones inteligentes y guías paso a paso para armar tu PC perfecta.</p>
+                    <div class="cta-buttons">
+                        <a href="hardware-comparison.html" class="btn btn-primary">Comparar Componentes</a>
+                        <a href="blog.html" class="btn btn-secondary">Leer Blog</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="features-section slide-up">
+                <h2>Características Principales</h2>
+                <div class="features-grid">
+                    <div class="feature-card pulse">
+                        <h3>Comparaciones IA</h3>
+                        <p>Comparaciones inteligentes generadas por IA de componentes hardware</p>
+                    </div>
+                    <div class="feature-card pulse">
+                        <h3>Encuestas Interactivas</h3>
+                        <p>Participa en encuestas sobre tecnología y hardware</p>
+                    </div>
+                    <div class="feature-card pulse">
+                        <h3>Blog Técnico</h3>
+                        <p>Guías detalladas y artículos sobre hardware</p>
+                    </div>
+                    <div class="feature-card pulse">
+                        <h3>Panel Admin</h3>
+                        <p>Gestiona usuarios, comparaciones y encuestas</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/three.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

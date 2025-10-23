@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - T-Hardia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="container">
+        <header class="animated-header">
+            <h1 class="glitch-text">T-Hardia</h1>
+            <p class="subtitle">Iniciar Sesión</p>
+        </header>
+        
+        <nav class="main-nav animated-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
+                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="login.html" class="nav-link active">Login</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <section class="auth-form slide-up">
+                <h2>Iniciar Sesión</h2>
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </form>
+                <p class="auth-link">
+                    ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+                </p>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

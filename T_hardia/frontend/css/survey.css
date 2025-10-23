@@ -1,0 +1,46 @@
+/* Estilos específicos para encuestas */
+.survey-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.survey-intro h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #ffd166;
+}
+
+.survey-questions {
+    display: grid;
+    gap: 2rem;
+}
+
+.question-card {
+    background: rgba(255,255,255,0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.question-card h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.question-options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.question-options button {
+    min-width: 80px;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+}

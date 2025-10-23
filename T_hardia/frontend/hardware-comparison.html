@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparar Hardware - T-Hardia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="container">
+        <header class="animated-header">
+            <h1 class="glitch-text">Comparador de Hardware</h1>
+            <p class="subtitle">Comparaciones inteligentes generadas por IA</p>
+        </header>
+        
+        <nav class="main-nav animated-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="hardware-comparison.html" class="nav-link active">Comparar Hardware</a></li>
+                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <section class="comparison-form slide-up">
+                <h2>Comparar Componentes</h2>
+                <form id="comparison-form">
+                    <div class="form-group">
+                        <label for="component1">Componente 1:</label>
+                        <input type="text" id="component1" placeholder="Ej: Intel i7-12700K" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="component2">Componente 2:</label>
+                        <input type="text" id="component2" placeholder="Ej: AMD Ryzen 7 5800X" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Comparar con IA</button>
+                </form>
+            </section>
+            
+            <section class="comparison-results" id="comparison-results" style="display: none;">
+                <h2>Resultados de Comparación</h2>
+                <div id="comparison-content"></div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
