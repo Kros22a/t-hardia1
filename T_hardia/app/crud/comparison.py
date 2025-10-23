@@ -25,7 +25,8 @@ def get_comparison_by_id(comparison_id: str) -> Optional[Comparison]:
 def get_comparisons_by_user(user_id: str) -> List[Comparison]:
     db = get_db()
     comparisons = []
-    docs = db.collection('comparisons').where('user_id', '==', user_id).stream()
+    # CORRECCIÓN: Usar sintaxis moderna de filtros
+    docs = db.collection('comparisons').where(filter=firestore.FieldFilter('user_id', '==', user_id)).stream()
     for doc in docs:
         comparisons.append(Comparison(**doc.to_dict()))
     return comparisons
@@ -51,10 +52,3 @@ def update_comparison_result(comparison_id: str, result: dict) -> Optional[Compa
         return Comparison(**doc.to_dict())
     return None
 
-def delete_comparison(comparison_id: str) -> bool:
-    db = get_db()
-    try:
-        db.collection('comparisons').document(comparison_id).delete()
-        return True
-    except:
-        return False
