@@ -1,18 +1,22 @@
-import hashlib
 from typing import Optional
 from app.models.user import UserCreate, User
 from app.database import get_db
 import uuid
 from datetime import datetime
-
-def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+from app.core.security import get_password_hash, verify_password
 
 def create_user(user: UserCreate) -> User:
     db = get_db()
+    # Verificar si el usuario ya existe
+    users_ref = db.collection('users')
+    query = users_ref.where('email', '==', user.email).limit(1)
+    docs = query.stream()
+    for doc in docs:
+        raise Exception("Email already registered")
+    
     user_dict = user.dict()
     user_dict['id'] = str(uuid.uuid4())
-    user_dict['password'] = hash_password(user.password)
+    user_dict['password'] = get_password_hash(user.password)  # Hash correcto
     user_dict['created_at'] = datetime.utcnow()
     user_dict['is_admin'] = False
     
@@ -38,7 +42,7 @@ def get_user_by_id(user_id: str) -> Optional[User]:
 
 def authenticate_user(email: str, password: str) -> Optional[User]:
     user = get_user_by_email(email)
-    if user and user.password == hash_password(password):
+    if user and verify_password(password, user.password):  # Verificación correcta
         # Update last login
         db = get_db()
         db.collection('users').document(user.id).update({
@@ -47,28 +51,10 @@ def authenticate_user(email: str, password: str) -> Optional[User]:
         return user
     return None
 
-def get_all_users() -> list[User]:
+def get_all_users() -> list:
     db = get_db()
     users = []
     docs = db.collection('users').stream()
     for doc in docs:
         users.append(User(**doc.to_dict()))
     return users
-
-def update_user(user_id: str, update_data: dict) -> Optional[User]:
-    db = get_db()
-    doc_ref = db.collection('users').document(user_id)
-    doc_ref.update(update_data)
-    
-    doc = doc_ref.get()
-    if doc.exists:
-        return User(**doc.to_dict())
-    return None
-
-def delete_user(user_id: str) -> bool:
-    db = get_db()
-    try:
-        db.collection('users').document(user_id).delete()
-        return True
-    except:
-        return False
