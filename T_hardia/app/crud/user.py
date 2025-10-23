@@ -1,3 +1,4 @@
+from google.cloud import firestore
 import hashlib
 from typing import Optional
 from app.models.user import UserCreate, User
@@ -55,3 +56,4 @@ def get_all_users() -> list[User]:
     for doc in docs:
         users.append(User(**doc.to_dict()))
     return users
+
