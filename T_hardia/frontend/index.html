@@ -3,103 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Hardia - Hardware Information Platform</title>
+    <title>T-Hardia 2025 - Hardware Information Platform</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <!-- Canvas para animación 3D -->
     <canvas id="three-canvas"></canvas>
     
-    <!-- Contenido principal -->
-    <div class="container">
-        <header class="animated-header">
-            <h1 class="glitch-text">T-Hardia</h1>
-            <p class="subtitle">Plataforma Avanzada de Información Hardware</p>
-        </header>
-        
-        <nav class="main-nav animated-nav">
-            <ul>
-                <li><a href="index.html" class="nav-link active">Inicio</a></li>
-                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
-                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
-                <li><a href="blog.html" class="nav-link">Blog</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <section class="hero-section fade-in">
-                <div class="hero-content">
-                    <h2>Explora el Mundo del Hardware</h2>
-                    <p>Obtén información detallada, comparaciones inteligentes y guías paso a paso para armar tu PC perfecta.</p>
-                    <div class="cta-buttons">
-                        <a href="login.html" class="btn btn-primary">Accede para Funciones Completas</a>
-                        <a href="hardware-comparison.html" class="btn btn-secondary">Comparar Componentes</a>
+    <!-- Header con navegación sticky -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="glitch-text">T-Hardia</h1>
+                    <span class="logo-subtitle">2025</span>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-link active">Inicio</a></li>
+                        <li><a href="hardware-comparison.html" class="nav-link">Comparar</a></li>
+                        <li><a href="survey.html" class="nav-link">Encuestas</a></li>
+                        <li><a href="blog.html" class="nav-link">Blog</a></li>
+                        <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section Obligatorio -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="hero-highlight">Revolution</span> 
+                    Hardware Intelligence
+                </h1>
+                <p class="hero-subtitle">
+                    La plataforma definitiva para entusiastas del hardware. 
+                    Comparaciones IA, análisis avanzados y comunidad experta.
+                </p>
+                <div class="hero-cta">
+                    <a href="register.html" class="btn btn-primary btn-hero">Comienza Gratis</a>
+                    <a href="#features" class="btn btn-secondary btn-hero">Explorar</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Usuarios</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Comparaciones</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Especialistas</span>
                     </div>
                 </div>
-            </section>
-            
-            <section class="features-section slide-up">
-                <h2>Características Principales</h2>
-                <div class="features-grid">
-                    <div class="feature-card pulse">
-                        <h3>Comparaciones IA</h3>
-                        <p>Comparaciones inteligentes generadas por IA de componentes hardware</p>
+            </div>
+            <div class="hero-image">
+                <div class="tech-grid">
+                    <div class="tech-item cpu">CPU</div>
+                    <div class="tech-item gpu">GPU</div>
+                    <div class="tech-item ram">RAM</div>
+                    <div class="tech-item ssd">SSD</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Características -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Funciones <span class="highlight">Avanzadas</span></h2>
+                <p>Accede a herramientas profesionales solo para miembros registrados</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card card-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
                     </div>
-                    <div class="feature-card pulse">
-                        <h3>Encuestas Interactivas</h3>
-                        <p>Participa en encuestas sobre tecnología y hardware</p>
+                    <h3>IA Comparativa</h3>
+                    <p>Comparaciones inteligentes generadas por inteligencia artificial avanzada</p>
+                    <div class="feature-badge">Premium</div>
+                </div>
+                <div class="feature-card card-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="feature-card pulse">
-                        <h3>Blog Técnico</h3>
-                        <p>Guías detalladas y artículos sobre hardware</p>
+                    <h3>Benchmarks</h3>
+                    <p>Análisis detallados con datos en tiempo real de rendimiento</p>
+                    <div class="feature-badge">Premium</div>
+                </div>
+                <div class="feature-card card-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
                     </div>
-                    <div class="feature-card pulse">
-                        <h3>Panel Admin</h3>
-                        <p>Gestiona usuarios, comparaciones y encuestas</p>
+                    <h3>Comunidad</h3>
+                    <p>Conecta con expertos y entusiastas del hardware</p>
+                    <div class="feature-badge">Premium</div>
+                </div>
+                <div class="feature-card card-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Contenido Exclusivo</h3>
+                    <p>Guías avanzadas, tutoriales y análisis exclusivos</p>
+                    <div class="feature-badge">Premium</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección CTA Obligatoria -->
+    <section class="cta-mandatory">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Desbloquea el Poder <span class="highlight">Completo</span></h2>
+                <p>Regístrate ahora y accede a todas nuestras funciones avanzadas de hardware</p>
+                <div class="cta-actions">
+                    <a href="register.html" class="btn btn-primary btn-large">Registrarse Ahora</a>
+                    <a href="login.html" class="btn btn-outline">Ya tengo cuenta</a>
+                </div>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Comparaciones ilimitadas</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Acceso a benchmarks avanzados</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Participación en encuestas</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Contenido exclusivo</span>
                     </div>
                 </div>
-            </section>
-            
-            <section class="content-section slide-up">
-                <h2>¿Por qué elegir T-Hardia?</h2>
-                <div class="content-grid">
-                    <div class="content-card">
-                        <h3>Información Actualizada</h3>
-                        <p>Mantente al día con las últimas novedades en hardware y tecnología.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Comparaciones Objetivas</h3>
-                        <p>Análisis imparciales basados en datos reales y benchmarks.</p>
-                    </div>
-                    <div class="content-card">
-                        <h3>Comunidad Activa</h3>
-                        <p>Únete a nuestra comunidad de entusiastas del hardware.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>T-Hardia 2025</h3>
+                    <p>La plataforma definitiva para entusiastas del hardware y profesionales de TI.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-            </section>
-            
-            <section class="cta-section">
-                <h2>Comienza tu experiencia hardware hoy</h2>
-                <p>Regístrate gratis y accede a todas nuestras funciones avanzadas</p>
-                <div class="cta-buttons">
-                    <a href="register.html" class="btn btn-primary btn-large">Registrarse Gratis</a>
-                    <a href="login.html" class="btn btn-secondary btn-large">Iniciar Sesión</a>
+                <div class="footer-column">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="hardware-comparison.html">Comparador IA</a></li>
+                        <li><a href="survey.html">Encuestas</a></li>
+                        <li><a href="blog.html">Blog Técnico</a></li>
+                        <li><a href="#">API Developers</a></li>
+                    </ul>
                 </div>
-            </section>
-        </main>
-        
-        <footer class="main-footer">
-            <p>&copy; 2024 T-Hardia. Todos los derechos reservados.</p>
-        </footer>
-    </div>
-    
+                <div class="footer-column">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Guías</a></li>
+                        <li><a href="#">Soporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                        <li><a href="#">Términos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 T-Hardia. Todos los derechos reservados. | Diseñado con <i class="fas fa-heart"></i> para la comunidad hardware</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/three.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
-
-
