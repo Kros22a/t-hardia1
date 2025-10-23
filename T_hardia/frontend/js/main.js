@@ -1,22 +1,16 @@
 // Variables globales
 const API_BASE_URL = '/api/v1';
 
-// Función para manejar el formulario de comparación
+// Verificar autenticación al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    const comparisonForm = document.getElementById('comparison-form');
-    if (comparisonForm) {
-        comparisonForm.addEventListener('submit', handleComparisonSubmit);
-    }
+    const currentPage = window.location.pathname.split('/').pop();
     
-    // Cargar preguntas de encuesta si estamos en la página de encuesta
-    const surveyQuestionsDiv = document.getElementById('survey-questions');
-    if (surveyQuestionsDiv) {
+    // Cargar datos según la página
+    if (currentPage === 'hardware-comparison.html') {
+        // Ya se maneja con el script inline
+    } else if (currentPage === 'survey.html') {
         loadSurveyQuestions();
-    }
-    
-    // Cargar posts de blog si estamos en la página de blog
-    const blogPostsDiv = document.getElementById('blog-posts');
-    if (blogPostsDiv) {
+    } else if (currentPage === 'blog.html') {
         loadBlogPosts();
     }
     
@@ -32,9 +26,13 @@ async function handleComparisonSubmit(event) {
     const component2 = document.getElementById('component2').value;
     
     if (!component1 || !component2) {
-        alert('Por favor completa ambos campos');
+        alert('Por favor selecciona ambos componentes');
         return;
     }
+    
+    // Obtener nombres legibles de los componentes
+    const component1Name = document.getElementById('component1').selectedOptions[0].text;
+    const component2Name = document.getElementById('component2').selectedOptions[0].text;
     
     try {
         // Mostrar loading
@@ -46,14 +44,15 @@ async function handleComparisonSubmit(event) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                component1: component1,
-                component2: component2,
+                component1: component1Name,
+                component2: component2Name,
                 user_id: 'anonymous' // En producción usar ID de usuario real
             })
         });
         
         if (!response.ok) {
-            throw new Error('Error en la comparación');
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Error en la comparación');
         }
         
         const comparison = await response.json();
@@ -61,7 +60,7 @@ async function handleComparisonSubmit(event) {
         
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al realizar la comparación. Por favor intenta de nuevo.');
+        alert(`Error al realizar la comparación: ${error.message}`);
     } finally {
         hideLoading();
     }
@@ -73,34 +72,53 @@ function displayComparisonResult(comparison) {
     const contentDiv = document.getElementById('comparison-content');
     
     if (comparison.result && !comparison.result.error) {
-        contentDiv.innerHTML = `
+        let html = `
             <div class="comparison-result">
                 <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
                 <div class="result-section">
                     <h4>Resumen</h4>
-                    <p>${comparison.result.recommendation || 'Comparación generada por IA'}</p>
-                </div>
-                <div class="result-section">
-                    <h4>Detalles Técnicos</h4>
-                    <div class="technical-details">
-                        <div class="component-specs">
-                            <h5>${comparison.component1}</h5>
-                            <pre>${JSON.stringify(comparison.result.component1_specs || {}, null, 2)}</pre>
-                        </div>
-                        <div class="component-specs">
-                            <h5>${comparison.component2}</h5>
-                            <pre>${JSON.stringify(comparison.result.component2_specs || {}, null, 2)}</pre>
-                        </div>
+                    <div class="summary-content">
+                        ${comparison.result.recommendation || 'Comparación generada por IA'}
                     </div>
                 </div>
-            </div>
         `;
+        
+        if (comparison.result.performance_comparison) {
+            html += `
+                <div class="result-section">
+                    <h4>Comparación de Rendimiento</h4>
+                    <div class="performance-content">
+                        ${typeof comparison.result.performance_comparison === 'string' 
+                          ? comparison.result.performance_comparison 
+                          : JSON.stringify(comparison.result.performance_comparison, null, 2)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (comparison.result.price_performance) {
+            html += `
+                <div class="result-section">
+                    <h4>Relación Precio-Rendimiento</h4>
+                    <div class="price-content">
+                        ${typeof comparison.result.price_performance === 'string' 
+                          ? comparison.result.price_performance 
+                          : JSON.stringify(comparison.result.price_performance, null, 2)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</div>`;
+        contentDiv.innerHTML = html;
     } else {
         contentDiv.innerHTML = `
             <div class="comparison-result">
                 <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
-                <p>Resultados generados por IA:</p>
-                <pre>${JSON.stringify(comparison.result, null, 2)}</pre>
+                <div class="error-content">
+                    <p>No se pudieron obtener resultados detallados de la comparación.</p>
+                    <p>Resultado: ${JSON.stringify(comparison.result || 'Sin datos', null, 2)}</p>
+                </div>
             </div>
         `;
     }
@@ -123,7 +141,7 @@ async function loadSurveyQuestions() {
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('survey-questions').innerHTML = 
-            '<p>Error al cargar las preguntas. Por favor recarga la página.</p>';
+            '<p class="error">Error al cargar las preguntas. Por favor recarga la página.</p>';
     }
 }
 
@@ -132,17 +150,21 @@ function displaySurveyQuestions(questions) {
     const questionsDiv = document.getElementById('survey-questions');
     let html = '';
     
-    questions.forEach((question, index) => {
-        html += `
-            <div class="question-card slide-up" style="animation-delay: ${index * 0.1}s">
-                <h3>${question.question}</h3>
-                <div class="question-options">
-                    <button class="btn btn-secondary" onclick="submitSurveyResponse('${question.id}', true)">Sí</button>
-                    <button class="btn btn-secondary" onclick="submitSurveyResponse('${question.id}', false)">No</button>
+    if (questions && questions.length > 0) {
+        questions.forEach((question, index) => {
+            html += `
+                <div class="question-card slide-up" style="animation-delay: ${index * 0.1}s">
+                    <h3>${question.question}</h3>
+                    <div class="question-options">
+                        <button class="btn btn-yes" onclick="submitSurveyResponse('${question.id}', true)">Sí</button>
+                        <button class="btn btn-no" onclick="submitSurveyResponse('${question.id}', false)">No</button>
+                    </div>
                 </div>
-            </div>
-        `;
-    });
+            `;
+        });
+    } else {
+        html = '<p class="no-questions">No hay preguntas disponibles en este momento.</p>';
+    }
     
     questionsDiv.innerHTML = html;
     
@@ -171,19 +193,17 @@ async function submitSurveyResponse(questionId, response) {
         
         if (responseObj.ok) {
             // Mostrar feedback visual
-            const button = event.target;
-            button.style.background = response ? '#4CAF50' : '#f44336';
-            button.textContent = response ? 'Sí ✓' : 'No ✓';
-            
-            // Deshabilitar botones
-            button.parentElement.querySelectorAll('button').forEach(btn => {
-                btn.disabled = true;
-            });
+            const buttonContainer = event.target.parentElement;
+            buttonContainer.innerHTML = response ? 
+                '<span class="response-success">✓ Respondido: Sí</span>' : 
+                '<span class="response-success">✓ Respondido: No</span>';
+        } else {
+            throw new Error('Error al enviar respuesta');
         }
         
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al enviar respuesta');
+        alert('Error al enviar respuesta. Por favor intenta de nuevo.');
     }
 }
 
@@ -201,7 +221,7 @@ async function loadBlogPosts() {
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('blog-posts').innerHTML = 
-            '<p>Error al cargar los posts. Por favor recarga la página.</p>';
+            '<p class="error">Error al cargar los posts. Por favor recarga la página.</p>';
     }
 }
 
@@ -210,23 +230,27 @@ function displayBlogPosts(posts) {
     const postsDiv = document.getElementById('blog-posts');
     let html = '';
     
-    posts.forEach((post, index) => {
-        html += `
-            <article class="blog-post slide-up" style="animation-delay: ${index * 0.1}s">
-                <h2><a href="/blog/${post.slug}">${post.title}</a></h2>
-                <div class="post-meta">
-                    <span class="author">Por ${post.author}</span>
-                    <span class="category">${post.category}</span>
-                    <span class="date">${new Date(post.created_at).toLocaleDateString()}</span>
-                </div>
-                <p>${post.content.substring(0, 200)}...</p>
-                <div class="post-tags">
-                    ${post.tags ? post.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
-                </div>
-                <a href="/blog/${post.slug}" class="btn btn-primary">Leer más</a>
-            </article>
-        `;
-    });
+    if (posts && posts.length > 0) {
+        posts.forEach((post, index) => {
+            html += `
+                <article class="blog-post slide-up" style="animation-delay: ${index * 0.1}s">
+                    <h2><a href="/blog/${post.slug}">${post.title}</a></h2>
+                    <div class="post-meta">
+                        <span class="author">Por ${post.author}</span>
+                        <span class="category">${post.category}</span>
+                        <span class="date">${new Date(post.created_at).toLocaleDateString('es-ES')}</span>
+                    </div>
+                    <p>${post.content.substring(0, 200)}...</p>
+                    <div class="post-tags">
+                        ${post.tags ? post.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                    </div>
+                    <a href="/blog/${post.slug}" class="btn btn-primary">Leer más</a>
+                </article>
+            `;
+        });
+    } else {
+        html = '<p class="no-posts">No hay posts disponibles en este momento.</p>';
+    }
     
     postsDiv.innerHTML = html;
     
@@ -241,7 +265,7 @@ function displayBlogPosts(posts) {
 // Mostrar/Ocultar loading
 function showLoading() {
     const button = document.querySelector('#comparison-form button');
-    button.innerHTML = 'Comparando...';
+    button.innerHTML = '<span class="loading-spinner"></span> Comparando...';
     button.disabled = true;
 }
 
@@ -266,7 +290,7 @@ function animateOnScroll() {
     });
 }
 
-// Manejar login/registro
+// Manejar login
 async function handleLogin(event) {
     event.preventDefault();
     
@@ -285,17 +309,20 @@ async function handleLogin(event) {
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem('token', data.access_token);
+            localStorage.setItem('user_email', email);
             window.location.href = '/'; // Redirigir a página principal
         } else {
-            alert('Credenciales inválidas');
+            const errorData = await response.json();
+            alert(errorData.detail || 'Credenciales inválidas');
         }
         
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al iniciar sesión');
+        alert('Error al iniciar sesión. Por favor intenta de nuevo.');
     }
 }
 
+// Manejar registro
 async function handleRegister(event) {
     event.preventDefault();
     
@@ -316,12 +343,26 @@ async function handleRegister(event) {
             alert('Registro exitoso. Ahora puedes iniciar sesión.');
             window.location.href = '/login.html';
         } else {
-            const error = await response.json();
-            alert(error.detail || 'Error en el registro');
+            const errorData = await response.json();
+            alert(errorData.detail || 'Error en el registro');
         }
         
     } catch (error) {
         console.error('Error:', error);
-        alert('Error en el registro');
+        alert('Error en el registro. Por favor intenta de nuevo.');
     }
 }
+
+// Verificar si el usuario está logueado
+function isLoggedIn() {
+    return localStorage.getItem('token') !== null;
+}
+
+// Cerrar sesión
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_email');
+    window.location.href = '/login.html';
+}
+
+
