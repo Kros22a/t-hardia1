@@ -7,8 +7,8 @@ import os
 # Configuración de hashing de contraseñas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Configuración de JWT - Solo variables de entorno
-SECRET_KEY = os.getenv("SECRET_KEY")  # Se obtiene de las variables de entorno
+# Configuración de JWT
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key-for-development")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
