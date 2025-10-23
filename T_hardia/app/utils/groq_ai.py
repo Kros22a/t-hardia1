@@ -1,6 +1,9 @@
 import os
 from groq import Groq
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 class GroqAI:
     def __init__(self):
@@ -21,8 +24,6 @@ class GroqAI:
         6. Recommendation
         
         Return the response in JSON format with these keys:
-        - component1_specs
-        - component2_specs
         - performance_comparison
         - price_performance
         - power_consumption
@@ -33,6 +34,8 @@ class GroqAI:
         """
         
         try:
+            logger.info(f"Making AI comparison request for: {component1} vs {component2}")
+            
             chat_completion = self.client.chat.completions.create(
                 messages=[
                     {
@@ -46,43 +49,26 @@ class GroqAI:
             )
             
             response = chat_completion.choices[0].message.content
+            logger.info("AI response received successfully")
+            
             # Intentar parsear como JSON
             try:
-                return json.loads(response)
-            except:
-                # Si no es JSON válido, retornar como texto
-                return {"raw_response": response}
+                result = json.loads(response)
+                logger.info("JSON parsing successful")
+                return result
+            except json.JSONDecodeError:
+                # Si no es JSON válido, retornar como texto estructurado
+                logger.warning("JSON parsing failed, returning raw response")
+                return {
+                    "performance_comparison": response,
+                    "recommendation": "Comparación generada por IA"
+                }
                 
         except Exception as e:
-            return {"error": f"AI comparison failed: {str(e)}"}
-    
-    def generate_hardware_guide(self, topic: str) -> str:
-        prompt = f"""
-        Create a detailed step-by-step guide for: {topic}
-        Include:
-        1. Introduction and prerequisites
-        2. Step-by-step instructions with detailed explanations
-        3. Common mistakes to avoid
-        4. Troubleshooting tips
-        5. Conclusion
-        
-        Make it comprehensive and beginner-friendly.
-        """
-        
-        try:
-            chat_completion = self.client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt,
-                    }
-                ],
-                model="llama3-8b-8192",
-                temperature=0.7,
-                max_tokens=3000,
-            )
-            
-            return chat_completion.choices[0].message.content
-            
-        except Exception as e:
-            return f"Failed to generate guide: {str(e)}"
+            logger.error(f"AI comparison failed: {str(e)}")
+            return {
+                "error": f"AI comparison failed: {str(e)}",
+                "performance_comparison": "No se pudo generar la comparación",
+                "recommendation": "Error en la generación de comparación"
+            }
+
