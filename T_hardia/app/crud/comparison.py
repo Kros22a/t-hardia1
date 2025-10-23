@@ -1,3 +1,4 @@
+from google.cloud import firestore
 from typing import Optional, List
 from app.models.comparison import ComparisonCreate, Comparison
 from app.database import get_db
@@ -51,4 +52,5 @@ def update_comparison_result(comparison_id: str, result: dict) -> Optional[Compa
     if doc.exists:
         return Comparison(**doc.to_dict())
     return None
+
 
