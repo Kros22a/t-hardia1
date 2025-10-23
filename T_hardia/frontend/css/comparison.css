@@ -1,4 +1,15 @@
 /* Estilos específicos para comparaciones */
+.comparison-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.comparison-intro h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #ffd166;
+}
+
 .comparison-form {
     background: rgba(255,255,255,0.1);
     padding: 2rem;
@@ -10,19 +21,28 @@
 .comparison-form h2 {
     margin-bottom: 1.5rem;
     color: #ffd166;
+    text-align: center;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    color: #4ecdc4;
 }
 
-.form-group input {
+.form-group select {
     width: 100%;
     padding: 1rem;
     border: none;
@@ -30,11 +50,26 @@
     background: rgba(255,255,255,0.2);
     color: white;
     font-size: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
 }
 
-.form-group input:focus {
+.form-group select:focus {
     outline: none;
     background: rgba(255,255,255,0.3);
+    border-color: #4ecdc4;
+}
+
+.form-group select option {
+    background: #2a5298;
+    color: white;
+}
+
+.btn-large {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.2rem;
+    margin: 1rem auto;
+    display: block;
 }
 
 .comparison-results {
@@ -48,38 +83,57 @@
 .comparison-result h3 {
     margin-bottom: 1.5rem;
     color: #ffd166;
+    text-align: center;
 }
 
 .result-section {
     margin-bottom: 2rem;
+    background: rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    border-radius: 10px;
 }
 
 .result-section h4 {
     margin-bottom: 1rem;
     color: #4ecdc4;
+    font-size: 1.3rem;
 }
 
-.technical-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-}
-
-.component-specs {
-    background: rgba(0,0,0,0.2);
-    padding: 1rem;
-    border-radius: 8px;
-}
-
-.component-specs h5 {
-    margin-bottom: 0.5rem;
-    color: #ff6b6b;
-}
-
-.component-specs pre {
+.summary-content, .performance-content, .price-content {
     background: rgba(0,0,0,0.3);
     padding: 1rem;
     border-radius: 5px;
-    overflow-x: auto;
-    font-size: 0.9rem;
+    line-height: 1.6;
 }
+
+.error-content {
+    background: rgba(255,0,0,0.1);
+    padding: 1rem;
+    border-radius: 5px;
+    color: #ff6b6b;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+}
+
