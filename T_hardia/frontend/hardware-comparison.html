@@ -6,6 +6,7 @@
     <title>Comparar Hardware - T-Hardia</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/comparison.css">
 </head>
 <body>
     <div class="container">
@@ -25,18 +26,59 @@
         </nav>
         
         <main class="main-content">
+            <section class="comparison-intro fade-in">
+                <h2>Comparador Avanzado de Hardware</h2>
+                <p>Selecciona categorías y componentes para obtener comparaciones detalladas generadas por IA</p>
+            </section>
+            
             <section class="comparison-form slide-up">
                 <h2>Comparar Componentes</h2>
                 <form id="comparison-form">
-                    <div class="form-group">
-                        <label for="component1">Componente 1:</label>
-                        <input type="text" id="component1" placeholder="Ej: Intel i7-12700K" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category1">Categoría Componente 1:</label>
+                            <select id="category1" required onchange="updateComponents(1)">
+                                <option value="">Seleccionar categoría</option>
+                                <option value="cpu">Procesador (CPU)</option>
+                                <option value="gpu">Tarjeta Gráfica (GPU)</option>
+                                <option value="ram">Memoria RAM</option>
+                                <option value="storage">Almacenamiento</option>
+                                <option value="motherboard">Placa Base</option>
+                                <option value="psu">Fuente de Poder</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="component1">Componente 1:</label>
+                            <select id="component1" required>
+                                <option value="">Primero selecciona una categoría</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="component2">Componente 2:</label>
-                        <input type="text" id="component2" placeholder="Ej: AMD Ryzen 7 5800X" required>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category2">Categoría Componente 2:</label>
+                            <select id="category2" required onchange="updateComponents(2)">
+                                <option value="">Seleccionar categoría</option>
+                                <option value="cpu">Procesador (CPU)</option>
+                                <option value="gpu">Tarjeta Gráfica (GPU)</option>
+                                <option value="ram">Memoria RAM</option>
+                                <option value="storage">Almacenamiento</option>
+                                <option value="motherboard">Placa Base</option>
+                                <option value="psu">Fuente de Poder</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="component2">Componente 2:</label>
+                            <select id="component2" required>
+                                <option value="">Primero selecciona una categoría</option>
+                            </select>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Comparar con IA</button>
+                    
+                    <button type="submit" class="btn btn-primary btn-large">Comparar con IA</button>
                 </form>
             </section>
             
@@ -48,5 +90,68 @@
     </div>
     
     <script src="js/main.js"></script>
+    <script>
+        // Datos de componentes por categoría
+        const componentsData = {
+            cpu: [
+                { value: "intel_i9_13900k", text: "Intel Core i9-13900K" },
+                { value: "intel_i7_13700k", text: "Intel Core i7-13700K" },
+                { value: "amd_ryzen_9_7950x", text: "AMD Ryzen 9 7950X" },
+                { value: "amd_ryzen_7_7800x3d", text: "AMD Ryzen 7 7800X3D" },
+                { value: "intel_i5_13600k", text: "Intel Core i5-13600K" },
+                { value: "amd_ryzen_5_7600x", text: "AMD Ryzen 5 7600X" }
+            ],
+            gpu: [
+                { value: "rtx_4090", text: "NVIDIA GeForce RTX 4090" },
+                { value: "rtx_4080", text: "NVIDIA GeForce RTX 4080" },
+                { value: "rx_7900_xtx", text: "AMD Radeon RX 7900 XTX" },
+                { value: "rtx_4070_ti", text: "NVIDIA GeForce RTX 4070 Ti" },
+                { value: "rx_7800_xt", text: "AMD Radeon RX 7800 XT" },
+                { value: "rtx_4060_ti", text: "NVIDIA GeForce RTX 4060 Ti" }
+            ],
+            ram: [
+                { value: "corsair_dominator_32gb", text: "Corsair Dominator 32GB DDR5-5600" },
+                { value: "gskill_trident_32gb", text: "G.Skill Trident 32GB DDR5-6000" },
+                { value: "kingston_fury_32gb", text: "Kingston Fury 32GB DDR5-5600" },
+                { value: "crucial_ballistix_32gb", text: "Crucial Ballistix 32GB DDR5-5600" }
+            ],
+            storage: [
+                { value: "samsung_980_pro_2tb", text: "Samsung 980 PRO 2TB NVMe SSD" },
+                { value: "wd_black_sn850x_2tb", text: "WD Black SN850X 2TB NVMe SSD" },
+                { value: "crucial_p5_plus_2tb", text: "Crucial P5 Plus 2TB NVMe SSD" },
+                { value: "seagate_firecuda_2tb", text: "Seagate FireCuda 2TB SSHD" }
+            ],
+            motherboard: [
+                { value: "asus_rog_strix_z790", text: "ASUS ROG Strix Z790-E" },
+                { value: "msi_mpg_x670e", text: "MSI MPG X670E Carbon" },
+                { value: "gigabyte_z790_aorus", text: "Gigabyte Z790 AORUS Master" },
+                { value: "asrock_x670e_taichi", text: "ASRock X670E Taichi" }
+            ],
+            psu: [
+                { value: "corsair_ax1600i", text: "Corsair AX1600i 1600W 80+ Titanium" },
+                { value: "seasonic_prime_tx_1300", text: "Seasonic Prime TX-1300 1300W 80+ Titanium" },
+                { value: "evga_superNOVA_1000g5", text: "EVGA SuperNOVA 1000G5 1000W 80+ Gold" },
+                { value: "corsair_rm850x", text: "Corsair RM850x 850W 80+ Gold" }
+            ]
+        };
+
+        function updateComponents(selectNumber) {
+            const category = document.getElementById(`category${selectNumber}`).value;
+            const componentSelect = document.getElementById(`component${selectNumber}`);
+            
+            // Limpiar opciones
+            componentSelect.innerHTML = '<option value="">Selecciona un componente</option>';
+            
+            if (category && componentsData[category]) {
+                componentsData[category].forEach(component => {
+                    const option = document.createElement('option');
+                    option.value = component.value;
+                    option.textContent = component.text;
+                    componentSelect.appendChild(option);
+                });
+            }
+        }
+    </script>
 </body>
 </html>
+
