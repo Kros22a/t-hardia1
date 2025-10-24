@@ -3,39 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - T-Hardia</title>
+    <title>Blog - T-Hardia 2025</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="animated-header">
-            <h1 class="glitch-text">Blog T-Hardia</h1>
-            <p class="subtitle">Noticias, guías y análisis de hardware</p>
-        </header>
-        
-        <nav class="main-nav animated-nav">
-            <ul>
-                <li><a href="index.html" class="nav-link">Inicio</a></li>
-                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
-                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
-                <li><a href="blog.html" class="nav-link active">Blog</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <section class="blog-header fade-in">
-                <h2>Últimos Artículos</h2>
-                <p>Descubre las últimas tendencias, guías detalladas y análisis de componentes hardware.</p>
-            </section>
-            
-            <section class="blog-posts" id="blog-posts">
-                <div class="loading">Cargando artículos...</div>
-            </section>
-        </main>
-    </div>
-    
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="glitch-text">T-Hardia</h1>
+                    <span class="logo-subtitle">2025</span>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-link">Inicio</a></li>
+                        <li><a href="hardware-comparison.html" class="nav-link">Comparar</a></li>
+                        <li><a href="survey.html" class="nav-link">Encuestas</a></li>
+                        <li><a href="blog.html" class="nav-link active">Blog</a></li>
+                        <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="blog-hero">
+            <div class="container">
+                <h1>Blog <span class="highlight">Técnico</span></h1>
+                <p>Noticias, guías y análisis sobre el mundo del hardware</p>
+            </div>
+        </section>
+
+        <section class="blog-section">
+            <div class="container">
+                <div class="blog-header">
+                    <div class="header-content">
+                        <h2><i class="fas fa-newspaper"></i> Últimos Artículos</h2>
+                        <p>Descubre las últimas tendencias y guías especializadas</p>
+                    </div>
+                    
+                    <div class="blog-filters">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-blog" placeholder="Buscar artículos...">
+                        </div>
+                        <select id="category-filter">
+                            <option value="">Todas las categorías</option>
+                            <option value="guides">Guías</option>
+                            <option value="reviews">Reseñas</option>
+                            <option value="news">Noticias</option>
+                            <option value="tutorials">Tutoriales</option>
+                            <option value="benchmarks">Benchmarks</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="blog-content">
+                    <div class="blog-posts" id="blog-posts">
+                        <div class="loading-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Cargando artículos...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="blog-sidebar">
+                        <div class="sidebar-widget">
+                            <h3><i class="fas fa-fire"></i> Populares</h3>
+                            <div class="popular-posts">
+                                <div class="popular-post">
+                                    <h4>Guía Completa de Overclocking 2025</h4>
+                                    <span class="post-meta">15K vistas</span>
+                                </div>
+                                <div class="popular-post">
+                                    <h4>RTX 5090 vs RX 8900 XTX</h4>
+                                    <span class="post-meta">12K vistas</span>
+                                </div>
+                                <div class="popular-post">
+                                    <h4>Mejores PSUs para Gaming</h4>
+                                    <span class="post-meta">9K vistas</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-widget">
+                            <h3><i class="fas fa-tags"></i> Categorías</h3>
+                            <div class="categories-list">
+                                <a href="#" class="category-item">
+                                    <span>Guías</span>
+                                    <span class="count">24</span>
+                                </a>
+                                <a href="#" class="category-item">
+                                    <span>Reseñas</span>
+                                    <span class="count">18</span>
+                                </a>
+                                <a href="#" class="category-item">
+                                    <span>Noticias</span>
+                                    <span class="count">32</span>
+                                </a>
+                                <a href="#" class="category-item">
+                                    <span>Tutoriales</span>
+                                    <span class="count">15</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-widget">
+                            <h3><i class="fas fa-hashtag"></i> Etiquetas Populares</h3>
+                            <div class="tags-cloud">
+                                <span class="tag">CPU</span>
+                                <span class="tag">GPU</span>
+                                <span class="tag">Gaming</span>
+                                <span class="tag">Overclock</span>
+                                <span class="tag">SSD</span>
+                                <span class="tag">RAM</span>
+                                <span class="tag">Motherboard</span>
+                                <span class="tag">PSU</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de autores destacados -->
+        <section class="authors-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Autores <span class="highlight">Destacados</span></h2>
+                    <p>Expertos en hardware que comparten su conocimiento</p>
+                </div>
+                <div class="authors-grid">
+                    <div class="author-card">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Alex Hardware</h3>
+                        <p>Especialista en CPUs y Overclocking</p>
+                        <div class="author-stats">
+                            <span><i class="fas fa-file-alt"></i> 45 artículos</span>
+                        </div>
+                    </div>
+                    <div class="author-card">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Sara GPU</h3>
+                        <p>Experta en Tarjetas Gráficas</p>
+                        <div class="author-stats">
+                            <span><i class="fas fa-file-alt"></i> 32 artículos</span>
+                        </div>
+                    </div>
+                    <div class="author-card">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Mike Storage</h3>
+                        <p>Especialista en Almacenamiento</p>
+                        <div class="author-stats">
+                            <span><i class="fas fa-file-alt"></i> 28 artículos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>T-Hardia 2025</h3>
+                    <p>La plataforma definitiva para entusiastas del hardware.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="hardware-comparison.html">Comparador IA</a></li>
+                        <li><a href="survey.html">Encuestas</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 T-Hardia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/main.js"></script>
+    <script>
+        // Cargar posts al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBlogPosts();
+            
+            // Búsqueda en tiempo real
+            const searchInput = document.getElementById('search-blog');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filterBlogPosts(searchTerm);
+            });
+            
+            // Filtrar por categoría
+            const categoryFilter = document.getElementById('category-filter');
+            categoryFilter.addEventListener('change', function() {
+                const category = this.value;
+                filterBlogPostsByCategory(category);
+            });
+        });
+        
+        // Filtrar posts por búsqueda
+        function filterBlogPosts(searchTerm) {
+            const posts = document.querySelectorAll('.blog-post');
+            posts.forEach(post => {
+                const title = post.querySelector('h2').textContent.toLowerCase();
+                const content = post.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+        
+        // Filtrar posts por categoría
+        function filterBlogPostsByCategory(category) {
+            // Esta función se implementaría con datos reales
+            console.log('Filtrando por categoría:', category);
+        }
+    </script>
 </body>
 </html>
+
+
