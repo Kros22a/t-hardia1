@@ -7,13 +7,9 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <!-- Canvas para animación 3D -->
-    <canvas id="three-canvas"></canvas>
-    
-    <!-- Header con navegación sticky -->
+    <!-- Header con navegación -->
     <header class="main-header">
         <div class="container">
             <div class="header-content">
@@ -39,7 +35,6 @@
 
     <!-- Hero Section Obligatorio -->
     <section class="hero-section">
-        <div class="hero-overlay"></div>
         <div class="container hero-content">
             <div class="hero-text">
                 <h1 class="hero-title">
@@ -70,12 +65,7 @@
                 </div>
             </div>
             <div class="hero-image">
-                <div class="tech-grid">
-                    <div class="tech-item cpu">CPU</div>
-                    <div class="tech-item gpu">GPU</div>
-                    <div class="tech-item ram">RAM</div>
-                    <div class="tech-item ssd">SSD</div>
-                </div>
+                <img src="assets/images/hero-tech.png" alt="Hardware Technology" class="hero-tech-image">
             </div>
         </div>
     </section>
@@ -204,8 +194,12 @@
         </div>
     </footer>
 
-    <script src="js/three.js"></script>
-    <script src="js/animations.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-list').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
