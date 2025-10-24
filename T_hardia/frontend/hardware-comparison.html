@@ -3,42 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparar Hardware - T-Hardia</title>
+    <title>Comparar Hardware - T-Hardia 2025</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/comparison.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="animated-header">
-            <h1 class="glitch-text">Comparador de Hardware</h1>
-            <p class="subtitle">Comparaciones inteligentes generadas por IA</p>
-        </header>
-        
-        <nav class="main-nav animated-nav">
-            <ul>
-                <li><a href="index.html" class="nav-link">Inicio</a></li>
-                <li><a href="hardware-comparison.html" class="nav-link active">Comparar Hardware</a></li>
-                <li><a href="survey.html" class="nav-link">Encuesta</a></li>
-                <li><a href="blog.html" class="nav-link">Blog</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <section class="comparison-intro fade-in">
-                <h2>Comparador Avanzado de Hardware</h2>
-                <p>Selecciona categorías y componentes para obtener comparaciones detalladas generadas por IA</p>
-            </section>
-            
-            <section class="comparison-form slide-up">
-                <h2>Comparar Componentes</h2>
-                <form id="comparison-form">
-                    <div class="form-row">
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="glitch-text">T-Hardia</h1>
+                    <span class="logo-subtitle">2025</span>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-link">Inicio</a></li>
+                        <li><a href="hardware-comparison.html" class="nav-link active">Comparar</a></li>
+                        <li><a href="survey.html" class="nav-link">Encuestas</a></li>
+                        <li><a href="blog.html" class="nav-link">Blog</a></li>
+                        <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="comparison-hero">
+            <div class="container">
+                <h1>Comparador <span class="highlight">Inteligente</span></h1>
+                <p>Ingresa los componentes que deseas comparar y nuestra IA te dará un análisis detallado</p>
+            </div>
+        </section>
+
+        <section class="comparison-section">
+            <div class="container">
+                <div class="comparison-form-container">
+                    <form id="comparison-form" class="comparison-form">
+                        <div class="form-header">
+                            <h2><i class="fas fa-balance-scale"></i> Comparar Componentes</h2>
+                            <p>Ingresa los nombres completos de los componentes que deseas comparar</p>
+                        </div>
+                        
                         <div class="form-group">
-                            <label for="category1">Categoría Componente 1:</label>
-                            <select id="category1" required onchange="updateComponents(1)">
-                                <option value="">Seleccionar categoría</option>
+                            <label for="component1">
+                                <i class="fas fa-microchip"></i>
+                                Componente 1
+                            </label>
+                            <input 
+                                type="text" 
+                                id="component1" 
+                                placeholder="Ej: Intel Core i9-13900K" 
+                                required
+                            >
+                            <div class="suggestions" id="suggestions1"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="component2">
+                                <i class="fas fa-microchip"></i>
+                                Componente 2
+                            </label>
+                            <input 
+                                type="text" 
+                                id="component2" 
+                                placeholder="Ej: AMD Ryzen 9 7950X" 
+                                required
+                            >
+                            <div class="suggestions" id="suggestions2"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">
+                                <i class="fas fa-tags"></i>
+                                Categoría (Opcional)
+                            </label>
+                            <select id="category">
+                                <option value="">Detectar automáticamente</option>
                                 <option value="cpu">Procesador (CPU)</option>
                                 <option value="gpu">Tarjeta Gráfica (GPU)</option>
                                 <option value="ram">Memoria RAM</option>
@@ -48,110 +95,160 @@
                             </select>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="component1">Componente 1:</label>
-                            <select id="component1" required>
-                                <option value="">Primero selecciona una categoría</option>
-                            </select>
-                        </div>
+                        <button type="submit" class="btn btn-primary btn-large btn-block">
+                            <span class="btn-text">Comparar con IA</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="comparison-results" id="comparison-results" style="display: none;">
+                    <div class="results-header">
+                        <h2>Resultados de Comparación</h2>
+                        <button class="btn btn-secondary" onclick="clearResults()">
+                            <i class="fas fa-times"></i> Nueva Comparación
+                        </button>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="category2">Categoría Componente 2:</label>
-                            <select id="category2" required onchange="updateComponents(2)">
-                                <option value="">Seleccionar categoría</option>
-                                <option value="cpu">Procesador (CPU)</option>
-                                <option value="gpu">Tarjeta Gráfica (GPU)</option>
-                                <option value="ram">Memoria RAM</option>
-                                <option value="storage">Almacenamiento</option>
-                                <option value="motherboard">Placa Base</option>
-                                <option value="psu">Fuente de Poder</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="component2">Componente 2:</label>
-                            <select id="component2" required>
-                                <option value="">Primero selecciona una categoría</option>
-                            </select>
-                        </div>
+                    <div id="comparison-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejemplos de comparación -->
+        <section class="examples-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ejemplos <span class="highlight">Populares</span></h2>
+                    <p>Prueba estas comparaciones sugeridas</p>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-card" onclick="loadExample('Intel Core i9-13900K', 'AMD Ryzen 9 7950X')">
+                        <h3>CPU High-End</h3>
+                        <p>Intel vs AMD</p>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary btn-large">Comparar con IA</button>
-                </form>
-            </section>
-            
-            <section class="comparison-results" id="comparison-results" style="display: none;">
-                <h2>Resultados de Comparación</h2>
-                <div id="comparison-content"></div>
-            </section>
-        </main>
-    </div>
-    
+                    <div class="example-card" onclick="loadExample('NVIDIA RTX 4090', 'AMD RX 7900 XTX')">
+                        <h3>GPU Premium</h3>
+                        <p>NVIDIA vs AMD</p>
+                    </div>
+                    <div class="example-card" onclick="loadExample('Samsung 980 PRO 2TB', 'WD Black SN850X 2TB')">
+                        <h3>SSD NVMe</h3>
+                        <p>Samsung vs WD</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>T-Hardia 2025</h3>
+                    <p>La plataforma definitiva para entusiastas del hardware.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="hardware-comparison.html">Comparador IA</a></li>
+                        <li><a href="survey.html">Encuestas</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 T-Hardia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/main.js"></script>
     <script>
-        // Datos de componentes por categoría
-        const componentsData = {
-            cpu: [
-                { value: "intel_i9_13900k", text: "Intel Core i9-13900K" },
-                { value: "intel_i7_13700k", text: "Intel Core i7-13700K" },
-                { value: "amd_ryzen_9_7950x", text: "AMD Ryzen 9 7950X" },
-                { value: "amd_ryzen_7_7800x3d", text: "AMD Ryzen 7 7800X3D" },
-                { value: "intel_i5_13600k", text: "Intel Core i5-13600K" },
-                { value: "amd_ryzen_5_7600x", text: "AMD Ryzen 5 7600X" }
-            ],
-            gpu: [
-                { value: "rtx_4090", text: "NVIDIA GeForce RTX 4090" },
-                { value: "rtx_4080", text: "NVIDIA GeForce RTX 4080" },
-                { value: "rx_7900_xtx", text: "AMD Radeon RX 7900 XTX" },
-                { value: "rtx_4070_ti", text: "NVIDIA GeForce RTX 4070 Ti" },
-                { value: "rx_7800_xt", text: "AMD Radeon RX 7800 XT" },
-                { value: "rtx_4060_ti", text: "NVIDIA GeForce RTX 4060 Ti" }
-            ],
-            ram: [
-                { value: "corsair_dominator_32gb", text: "Corsair Dominator 32GB DDR5-5600" },
-                { value: "gskill_trident_32gb", text: "G.Skill Trident 32GB DDR5-6000" },
-                { value: "kingston_fury_32gb", text: "Kingston Fury 32GB DDR5-5600" },
-                { value: "crucial_ballistix_32gb", text: "Crucial Ballistix 32GB DDR5-5600" }
-            ],
-            storage: [
-                { value: "samsung_980_pro_2tb", text: "Samsung 980 PRO 2TB NVMe SSD" },
-                { value: "wd_black_sn850x_2tb", text: "WD Black SN850X 2TB NVMe SSD" },
-                { value: "crucial_p5_plus_2tb", text: "Crucial P5 Plus 2TB NVMe SSD" },
-                { value: "seagate_firecuda_2tb", text: "Seagate FireCuda 2TB SSHD" }
-            ],
-            motherboard: [
-                { value: "asus_rog_strix_z790", text: "ASUS ROG Strix Z790-E" },
-                { value: "msi_mpg_x670e", text: "MSI MPG X670E Carbon" },
-                { value: "gigabyte_z790_aorus", text: "Gigabyte Z790 AORUS Master" },
-                { value: "asrock_x670e_taichi", text: "ASRock X670E Taichi" }
-            ],
-            psu: [
-                { value: "corsair_ax1600i", text: "Corsair AX1600i 1600W 80+ Titanium" },
-                { value: "seasonic_prime_tx_1300", text: "Seasonic Prime TX-1300 1300W 80+ Titanium" },
-                { value: "evga_superNOVA_1000g5", text: "EVGA SuperNOVA 1000G5 1000W 80+ Gold" },
-                { value: "corsair_rm850x", text: "Corsair RM850x 850W 80+ Gold" }
-            ]
-        };
-
-        function updateComponents(selectNumber) {
-            const category = document.getElementById(`category${selectNumber}`).value;
-            const componentSelect = document.getElementById(`component${selectNumber}`);
-            
-            // Limpiar opciones
-            componentSelect.innerHTML = '<option value="">Selecciona un componente</option>';
-            
-            if (category && componentsData[category]) {
-                componentsData[category].forEach(component => {
-                    const option = document.createElement('option');
-                    option.value = component.value;
-                    option.textContent = component.text;
-                    componentSelect.appendChild(option);
-                });
-            }
+        // Cargar ejemplo
+        function loadExample(comp1, comp2) {
+            document.getElementById('component1').value = comp1;
+            document.getElementById('component2').value = comp2;
+            document.getElementById('component1').focus();
         }
+
+        // Limpiar resultados
+        function clearResults() {
+            document.getElementById('comparison-results').style.display = 'none';
+            document.getElementById('comparison-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Sugerencias de autocompletado
+        const componentSuggestions = [
+            "Intel Core i9-13900K", "Intel Core i7-13700K", "Intel Core i5-13600K",
+            "AMD Ryzen 9 7950X", "AMD Ryzen 7 7800X3D", "AMD Ryzen 5 7600X",
+            "NVIDIA GeForce RTX 4090", "NVIDIA GeForce RTX 4080", "NVIDIA GeForce RTX 4070 Ti",
+            "AMD Radeon RX 7900 XTX", "AMD Radeon RX 7800 XT", "AMD Radeon RX 7700 XT",
+            "Samsung 980 PRO 2TB", "WD Black SN850X 2TB", "Crucial P5 Plus 2TB",
+            "Corsair Vengeance LPX 32GB", "G.Skill Trident Z5 32GB", "Kingston Fury Beast 32GB"
+        ];
+
+        // Autocompletado
+        function setupAutocomplete(inputId, suggestionsId) {
+            const input = document.getElementById(inputId);
+            const suggestionsDiv = document.getElementById(suggestionsId);
+            
+            input.addEventListener('input', function() {
+                const value = this.value.toLowerCase();
+                suggestionsDiv.innerHTML = '';
+                
+                if (value.length > 2) {
+                    const filtered = componentSuggestions.filter(item => 
+                        item.toLowerCase().includes(value)
+                    );
+                    
+                    if (filtered.length > 0) {
+                        filtered.slice(0, 5).forEach(item => {
+                            const div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.textContent = item;
+                            div.addEventListener('click', () => {
+                                input.value = item;
+                                suggestionsDiv.innerHTML = '';
+                            });
+                            suggestionsDiv.appendChild(div);
+                        });
+                        suggestionsDiv.style.display = 'block';
+                    } else {
+                        suggestionsDiv.style.display = 'none';
+                    }
+                } else {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+
+            // Ocultar sugerencias al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+        }
+
+        // Inicializar autocompletado
+        document.addEventListener('DOMContentLoaded', function() {
+            setupAutocomplete('component1', 'suggestions1');
+            setupAutocomplete('component2', 'suggestions2');
+        });
     </script>
 </body>
 </html>
-
