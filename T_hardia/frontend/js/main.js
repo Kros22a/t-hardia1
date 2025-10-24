@@ -1,22 +1,123 @@
 // Variables globales
 const API_BASE_URL = '/api/v1';
 
-// Verificar autenticación al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    // Cargar datos según la página
-    if (currentPage === 'hardware-comparison.html') {
-        // Ya se maneja con el script inline
-    } else if (currentPage === 'survey.html') {
-        loadSurveyQuestions();
-    } else if (currentPage === 'blog.html') {
-        loadBlogPosts();
+// Cargar preguntas de encuesta
+async function loadSurveyQuestions() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/surveys/questions/random?count=5`);
+        if (!response.ok) {
+            throw new Error('Error al cargar preguntas');
+        }
+        
+        const questions = await response.json();
+        displaySurveyQuestions(questions);
+        updateSurveyProgress(0, questions.length);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('survey-questions').innerHTML = 
+            '<div class="loading-state"><i class="fas fa-exclamation-triangle"></i><p>Error al cargar las preguntas. Por favor recarga la página.</p></div>';
     }
+}
+
+// Mostrar preguntas de encuesta
+function displaySurveyQuestions(questions) {
+    const questionsDiv = document.getElementById('survey-questions');
+    const progressDiv = document.getElementById('survey-progress');
     
-    // Animar elementos cuando entran en la vista
-    animateOnScroll();
-});
+    if (questions && questions.length > 0) {
+        let html = '';
+        questions.forEach((question, index) => {
+            html += `
+                <div class="question-card" data-question-id="${question.id}" data-index="${index}">
+                    <h3>${question.question}</h3>
+                    <div class="question-options">
+                        <button class="btn btn-yes" onclick="submitSurveyResponse('${question.id}', true, ${index})">
+                            <i class="fas fa-thumbs-up"></i> Sí
+                        </button>
+                        <button class="btn btn-no" onclick="submitSurveyResponse('${question.id}', false, ${index})">
+                            <i class="fas fa-thumbs-down"></i> No
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        questionsDiv.innerHTML = html;
+        progressDiv.style.display = 'block';
+        updateSurveyProgress(0, questions.length);
+    } else {
+        questionsDiv.innerHTML = '<div class="no-questions">No hay preguntas disponibles en este momento.</div>';
+        progressDiv.style.display = 'none';
+    }
+}
+
+// Enviar respuesta de encuesta
+async function submitSurveyResponse(questionId, response, index) {
+    try {
+        const responseObj = await fetch(`${API_BASE_URL}/surveys/responses`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question_id: questionId,
+                user_id: 'anonymous',
+                response: response
+            })
+        });
+        
+        if (responseObj.ok) {
+            // Mostrar feedback visual
+            const questionCard = document.querySelector(`[data-question-id="${questionId}"]`);
+            const optionsDiv = questionCard.querySelector('.question-options');
+            optionsDiv.innerHTML = `
+                <span class="response-success">
+                    <i class="fas fa-check-circle"></i>
+                    ${response ? 'Respondido: Sí' : 'Respondido: No'}
+                </span>
+            `;
+            
+            // Actualizar progreso
+            const totalQuestions = document.querySelectorAll('.question-card').length;
+            updateSurveyProgress(index + 1, totalQuestions);
+            
+            // Verificar si es la última pregunta
+            if (index === totalQuestions - 1) {
+                setTimeout(() => {
+                    showSurveyCompleted();
+                }, 1000);
+            }
+        } else {
+            throw new Error('Error al enviar respuesta');
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al enviar respuesta. Por favor intenta de nuevo.');
+    }
+}
+
+// Actualizar progreso de encuesta
+function updateSurveyProgress(current, total) {
+    const progressFill = document.getElementById('progress-fill');
+    const currentText = document.getElementById('current-question');
+    const totalText = document.getElementById('total-questions');
+    
+    if (progressFill && currentText && totalText) {
+        const percentage = (current / total) * 100;
+        progressFill.style.width = `${percentage}%`;
+        currentText.textContent = current;
+        totalText.textContent = total;
+    }
+}
+
+// Mostrar encuesta completada
+function showSurveyCompleted() {
+    document.getElementById('survey-questions').style.display = 'none';
+    document.getElementById('survey-progress').style.display = 'none';
+    document.getElementById('survey-completed').style.display = 'block';
+}
 
 // Manejar comparación de hardware
 async function handleComparisonSubmit(event) {
@@ -24,19 +125,16 @@ async function handleComparisonSubmit(event) {
     
     const component1 = document.getElementById('component1').value;
     const component2 = document.getElementById('component2').value;
+    const category = document.getElementById('category').value;
     
     if (!component1 || !component2) {
-        alert('Por favor selecciona ambos componentes');
+        alert('Por favor ingresa ambos componentes');
         return;
     }
     
-    // Obtener nombres legibles de los componentes
-    const component1Name = document.getElementById('component1').selectedOptions[0].text;
-    const component2Name = document.getElementById('component2').selectedOptions[0].text;
-    
     try {
         // Mostrar loading
-        showLoading();
+        showComparisonLoading();
         
         const response = await fetch(`${API_BASE_URL}/comparisons/`, {
             method: 'POST',
@@ -44,9 +142,10 @@ async function handleComparisonSubmit(event) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                component1: component1Name,
-                component2: component2Name,
-                user_id: 'anonymous' // En producción usar ID de usuario real
+                component1: component1,
+                component2: component2,
+                user_id: 'anonymous',
+                category: category
             })
         });
         
@@ -60,9 +159,9 @@ async function handleComparisonSubmit(event) {
         
     } catch (error) {
         console.error('Error:', error);
-        alert(`Error al realizar la comparación: ${error.message}`);
+        displayComparisonError(error.message);
     } finally {
-        hideLoading();
+        hideComparisonLoading();
     }
 }
 
@@ -73,20 +172,26 @@ function displayComparisonResult(comparison) {
     
     if (comparison.result && !comparison.result.error) {
         let html = `
-            <div class="comparison-result">
-                <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
+            <div class="comparison-content">
+                <div class="comparison-result">
+                    <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
+        `;
+        
+        if (comparison.result.recommendation) {
+            html += `
                 <div class="result-section">
-                    <h4>Resumen</h4>
+                    <h4><i class="fas fa-star"></i> Recomendación Principal</h4>
                     <div class="summary-content">
-                        ${comparison.result.recommendation || 'Comparación generada por IA'}
+                        ${comparison.result.recommendation}
                     </div>
                 </div>
-        `;
+            `;
+        }
         
         if (comparison.result.performance_comparison) {
             html += `
                 <div class="result-section">
-                    <h4>Comparación de Rendimiento</h4>
+                    <h4><i class="fas fa-tachometer-alt"></i> Comparación de Rendimiento</h4>
                     <div class="performance-content">
                         ${typeof comparison.result.performance_comparison === 'string' 
                           ? comparison.result.performance_comparison 
@@ -99,7 +204,7 @@ function displayComparisonResult(comparison) {
         if (comparison.result.price_performance) {
             html += `
                 <div class="result-section">
-                    <h4>Relación Precio-Rendimiento</h4>
+                    <h4><i class="fas fa-dollar-sign"></i> Relación Precio-Rendimiento</h4>
                     <div class="price-content">
                         ${typeof comparison.result.price_performance === 'string' 
                           ? comparison.result.price_performance 
@@ -109,15 +214,17 @@ function displayComparisonResult(comparison) {
             `;
         }
         
-        html += `</div>`;
+        html += `</div></div>`;
         contentDiv.innerHTML = html;
     } else {
         contentDiv.innerHTML = `
-            <div class="comparison-result">
-                <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
-                <div class="error-content">
-                    <p>No se pudieron obtener resultados detallados de la comparación.</p>
-                    <p>Resultado: ${JSON.stringify(comparison.result || 'Sin datos', null, 2)}</p>
+            <div class="comparison-content">
+                <div class="comparison-result">
+                    <h3>Comparación: ${comparison.component1} vs ${comparison.component2}</h3>
+                    <div class="error-content">
+                        <p>No se pudieron obtener resultados detallados de la comparación.</p>
+                        <p>${comparison.result ? JSON.stringify(comparison.result, null, 2) : 'Sin datos disponibles'}</p>
+                    </div>
                 </div>
             </div>
         `;
@@ -127,167 +234,46 @@ function displayComparisonResult(comparison) {
     resultsDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Cargar preguntas de encuesta
-async function loadSurveyQuestions() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/surveys/questions/random?count=5`);
-        if (!response.ok) {
-            throw new Error('Error al cargar preguntas');
-        }
-        
-        const questions = await response.json();
-        displaySurveyQuestions(questions);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('survey-questions').innerHTML = 
-            '<p class="error">Error al cargar las preguntas. Por favor recarga la página.</p>';
-    }
-}
-
-// Mostrar preguntas de encuesta
-function displaySurveyQuestions(questions) {
-    const questionsDiv = document.getElementById('survey-questions');
-    let html = '';
+// Mostrar error de comparación
+function displayComparisonError(message) {
+    const resultsDiv = document.getElementById('comparison-results');
+    const contentDiv = document.getElementById('comparison-content');
     
-    if (questions && questions.length > 0) {
-        questions.forEach((question, index) => {
-            html += `
-                <div class="question-card slide-up" style="animation-delay: ${index * 0.1}s">
-                    <h3>${question.question}</h3>
-                    <div class="question-options">
-                        <button class="btn btn-yes" onclick="submitSurveyResponse('${question.id}', true)">Sí</button>
-                        <button class="btn btn-no" onclick="submitSurveyResponse('${question.id}', false)">No</button>
-                    </div>
+    contentDiv.innerHTML = `
+        <div class="comparison-content">
+            <div class="comparison-result">
+                <h3><i class="fas fa-exclamation-triangle"></i> Error en Comparación</h3>
+                <div class="error-content">
+                    <p>${message}</p>
+                    <p>Por favor intenta con otros componentes o verifica la conexión.</p>
                 </div>
-            `;
-        });
-    } else {
-        html = '<p class="no-questions">No hay preguntas disponibles en este momento.</p>';
-    }
+            </div>
+        </div>
+    `;
     
-    questionsDiv.innerHTML = html;
-    
-    // Animar elementos
-    setTimeout(() => {
-        document.querySelectorAll('.question-card').forEach(card => {
-            card.classList.add('visible');
-        });
-    }, 100);
+    resultsDiv.style.display = 'block';
+    resultsDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Enviar respuesta de encuesta
-async function submitSurveyResponse(questionId, response) {
-    try {
-        const responseObj = await fetch(`${API_BASE_URL}/surveys/responses`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                question_id: questionId,
-                user_id: 'anonymous', // En producción usar ID real
-                response: response
-            })
-        });
-        
-        if (responseObj.ok) {
-            // Mostrar feedback visual
-            const buttonContainer = event.target.parentElement;
-            buttonContainer.innerHTML = response ? 
-                '<span class="response-success">✓ Respondido: Sí</span>' : 
-                '<span class="response-success">✓ Respondido: No</span>';
-        } else {
-            throw new Error('Error al enviar respuesta');
-        }
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al enviar respuesta. Por favor intenta de nuevo.');
-    }
-}
-
-// Cargar posts de blog
-async function loadBlogPosts() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/blog/`);
-        if (!response.ok) {
-            throw new Error('Error al cargar posts');
-        }
-        
-        const posts = await response.json();
-        displayBlogPosts(posts);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('blog-posts').innerHTML = 
-            '<p class="error">Error al cargar los posts. Por favor recarga la página.</p>';
-    }
-}
-
-// Mostrar posts de blog
-function displayBlogPosts(posts) {
-    const postsDiv = document.getElementById('blog-posts');
-    let html = '';
-    
-    if (posts && posts.length > 0) {
-        posts.forEach((post, index) => {
-            html += `
-                <article class="blog-post slide-up" style="animation-delay: ${index * 0.1}s">
-                    <h2><a href="/blog/${post.slug}">${post.title}</a></h2>
-                    <div class="post-meta">
-                        <span class="author">Por ${post.author}</span>
-                        <span class="category">${post.category}</span>
-                        <span class="date">${new Date(post.created_at).toLocaleDateString('es-ES')}</span>
-                    </div>
-                    <p>${post.content.substring(0, 200)}...</p>
-                    <div class="post-tags">
-                        ${post.tags ? post.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
-                    </div>
-                    <a href="/blog/${post.slug}" class="btn btn-primary">Leer más</a>
-                </article>
-            `;
-        });
-    } else {
-        html = '<p class="no-posts">No hay posts disponibles en este momento.</p>';
-    }
-    
-    postsDiv.innerHTML = html;
-    
-    // Animar elementos
-    setTimeout(() => {
-        document.querySelectorAll('.blog-post').forEach(post => {
-            post.classList.add('visible');
-        });
-    }, 100);
-}
-
-// Mostrar/Ocultar loading
-function showLoading() {
+// Mostrar/Ocultar loading de comparación
+function showComparisonLoading() {
     const button = document.querySelector('#comparison-form button');
-    button.innerHTML = '<span class="loading-spinner"></span> Comparando...';
+    const textSpan = button.querySelector('.btn-text');
+    const loadingSpan = button.querySelector('.btn-loading');
+    
+    textSpan.style.display = 'none';
+    loadingSpan.style.display = 'inline';
     button.disabled = true;
 }
 
-function hideLoading() {
+function hideComparisonLoading() {
     const button = document.querySelector('#comparison-form button');
-    button.innerHTML = 'Comparar con IA';
-    button.disabled = false;
-}
-
-// Animar elementos al hacer scroll
-function animateOnScroll() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
+    const textSpan = button.querySelector('.btn-text');
+    const loadingSpan = button.querySelector('.btn-loading');
     
-    document.querySelectorAll('.slide-up, .fade-in').forEach(el => {
-        observer.observe(el);
-    });
+    textSpan.style.display = 'inline';
+    loadingSpan.style.display = 'none';
+    button.disabled = false;
 }
 
 // Manejar login
@@ -353,16 +339,22 @@ async function handleRegister(event) {
     }
 }
 
-// Verificar si el usuario está logueado
-function isLoggedIn() {
-    return localStorage.getItem('token') !== null;
-}
-
-// Cerrar sesión
-function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_email');
-    window.location.href = '/login.html';
-}
-
-
+// Inicializar cuando el DOM esté cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Manejar formularios de comparación
+    const comparisonForm = document.getElementById('comparison-form');
+    if (comparisonForm) {
+        comparisonForm.addEventListener('submit', handleComparisonSubmit);
+    }
+    
+    // Manejar formularios de login/registro
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+    
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+});
