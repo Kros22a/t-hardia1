@@ -1,46 +1,308 @@
-/* Estilos específicos para encuestas */
-.survey-intro {
+/* Encuestas */
+.survey-hero {
+    background: linear-gradient(135deg, var(--accent), #f59e0b);
+    padding: 4rem 0;
     text-align: center;
+}
+
+.survey-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--darker);
+}
+
+.survey-hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    color: rgba(2, 6, 23, 0.9);
+}
+
+.survey-section {
+    padding: 4rem 0;
+}
+
+.survey-intro {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+}
+
+.intro-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.intro-content h2 i {
+    color: var(--accent);
+}
+
+.intro-content p {
+    color: var(--gray);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.survey-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.stat-item span:first-of-type {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+}
+
+.stat-item span:last-of-type {
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.survey-container {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
     margin-bottom: 2rem;
 }
 
-.survey-intro h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #ffd166;
-}
-
 .survey-questions {
-    display: grid;
-    gap: 2rem;
+    min-height: 300px;
 }
 
+/* Preguntas de encuesta */
 .question-card {
-    background: rgba(255,255,255,0.1);
+    background: rgba(2, 6, 23, 0.5);
     padding: 2rem;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    text-align: center;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+
+.question-card:last-child {
+    margin-bottom: 0;
 }
 
 .question-card h3 {
-    margin-bottom: 1.5rem;
     font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--light);
+    line-height: 1.4;
 }
 
 .question-options {
     display: flex;
-    justify-content: center;
     gap: 1rem;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
-.question-options button {
-    min-width: 80px;
+.btn-yes,
+.btn-no {
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    min-width: 100px;
+    transition: var(--transition);
 }
 
-.loading {
+.btn-yes {
+    background: linear-gradient(45deg, var(--secondary), #059669);
+    color: white;
+    border: none;
+}
+
+.btn-yes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-no {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+}
+
+.btn-no:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+}
+
+.response-success {
+    color: var(--secondary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Progreso de encuesta */
+.survey-progress {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
     text-align: center;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+/* Encuesta completada */
+.survey-completed {
+    text-align: center;
+    padding: 3rem;
+}
+
+.completed-content i {
+    font-size: 4rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+}
+
+.completed-content h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--light);
+}
+
+.completed-content p {
+    color: var(--gray);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Categorías */
+.categories-section {
+    padding: 4rem 0;
+    background: rgba(2, 6, 23, 0.3);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.category-card {
+    background: var(--card-bg);
     padding: 2rem;
-    font-size: 1.2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+}
+
+.category-card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.category-card h3 {
+    color: var(--light);
+    margin-bottom: 0.5rem;
+}
+
+.category-card p {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+/* Estados de carga */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--gray);
+    padding: 2rem;
+}
+
+.loading-state i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.no-questions {
+    text-align: center;
+    color: var(--gray);
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .survey-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .question-options {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-yes,
+    .btn-no {
+        width: 100%;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
 }
