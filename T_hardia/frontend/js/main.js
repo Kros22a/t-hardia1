@@ -339,6 +339,66 @@ async function handleRegister(event) {
     }
 }
 
+// Cargar posts de blog
+async function loadBlogPosts() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/blog/`);
+        if (!response.ok) {
+            throw new Error('Error al cargar posts');
+        }
+        
+        const posts = await response.json();
+        displayBlogPosts(posts);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('blog-posts').innerHTML = 
+            '<div class="loading-state"><i class="fas fa-exclamation-triangle"></i><p>Error al cargar los artículos. Por favor recarga la página.</p></div>';
+    }
+}
+
+// Mostrar posts de blog
+function displayBlogPosts(posts) {
+    const postsDiv = document.getElementById('blog-posts');
+    
+    if (posts && posts.length > 0) {
+        let html = '';
+        posts.forEach((post, index) => {
+            html += `
+                <article class="blog-post">
+                    <div class="post-image">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="post-content">
+                        <h2><a href="/blog/${post.slug}">${post.title}</a></h2>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> ${post.author}</span>
+                            <span><i class="fas fa-calendar"></i> ${new Date(post.created_at).toLocaleDateString('es-ES')}</span>
+                            <span><i class="fas fa-folder"></i> ${post.category}</span>
+                        </div>
+                        <p class="post-excerpt">${post.content.substring(0, 150)}...</p>
+                        <div class="post-tags">
+                            ${post.tags ? post.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                        </div>
+                        <div class="post-footer">
+                            <a href="/blog/${post.slug}" class="read-more">
+                                Leer más <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <div class="post-stats">
+                                <span><i class="fas fa-eye"></i> ${post.views || 0}</span>
+                                <span><i class="fas fa-comments"></i> 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        });
+        postsDiv.innerHTML = html;
+    } else {
+        postsDiv.innerHTML = '<div class="loading-state"><i class="fas fa-newspaper"></i><p>No hay artículos disponibles en este momento.</p></div>';
+    }
+}
+
 // Inicializar cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
     // Manejar formularios de comparación
@@ -356,5 +416,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
+    }
+    
+    // Cargar datos según la página actual
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    if (currentPage === 'survey.html') {
+        loadSurveyQuestions();
+    } else if (currentPage === 'blog.html') {
+        loadBlogPosts();
+    }
+    
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+            document.querySelector('.nav-list').classList.toggle('active');
+        });
     }
 });
