@@ -3,80 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta - T-Hardia</title>
+    <title>Encuestas - T-Hardia 2025</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/survey.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="animated-header">
-            <h1 class="glitch-text">Encuesta de Hardware</h1>
-            <p class="subtitle">Comparte tus preferencias tecnológicas</p>
-        </header>
-        
-        <nav class="main-nav animated-nav">
-            <ul>
-                <li><a href="index.html" class="nav-link">Inicio</a></li>
-                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
-                <li><a href="survey.html" class="nav-link active">Encuesta</a></li>
-                <li><a href="blog.html" class="nav-link">Blog</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <section class="survey-intro fade-in">
-                <h2>Preguntas sobre Hardware</h2>
-                <p>Responde 5 preguntas aleatorias sobre tus preferencias tecnológicas. Tus respuestas nos ayudan a mejorar nuestro contenido.</p>
-            </section>
-            
-            <section class="survey-questions" id="survey-questions">
-                <div class="loading">Cargando preguntas...</div>
-            </section>
-        </main>
-    </div>
-    
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="glitch-text">T-Hardia</h1>
+                    <span class="logo-subtitle">2025</span>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="index.html" class="nav-link">Inicio</a></li>
+                        <li><a href="hardware-comparison.html" class="nav-link">Comparar</a></li>
+                        <li><a href="survey.html" class="nav-link active">Encuestas</a></li>
+                        <li><a href="blog.html" class="nav-link">Blog</a></li>
+                        <li><a href="login.html" class="nav-link btn-login">Login</a></li>
+                    </ul>
+                    <div class="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="survey-hero">
+            <div class="container">
+                <h1>Encuestas <span class="highlight">Técnicas</span></h1>
+                <p>Comparte tu opinión y ayuda a mejorar nuestra comunidad hardware</p>
+            </div>
+        </section>
+
+        <section class="survey-section">
+            <div class="container">
+                <div class="survey-intro">
+                    <div class="intro-content">
+                        <h2><i class="fas fa-poll"></i> Tu Voz Importa</h2>
+                        <p>Responde 5 preguntas seleccionadas aleatoriamente de nuestro banco de preguntas técnicas. Tus respuestas nos ayudan a entender mejor las tendencias del mercado y las preferencias de la comunidad.</p>
+                        <div class="survey-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span>5,234</span>
+                                <span>Participantes</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-question-circle"></i>
+                                <span>50+</span>
+                                <span>Preguntas</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>98%</span>
+                                <span>Completitud</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="survey-container">
+                    <div class="survey-questions" id="survey-questions">
+                        <div class="loading-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Cargando preguntas...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="survey-progress" id="survey-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="current-question">1</span> de <span id="total-questions">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="survey-completed" id="survey-completed" style="display: none;">
+                    <div class="completed-content">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>¡Encuesta Completada!</h3>
+                        <p>Gracias por compartir tu opinión. Tus respuestas son valiosas para nuestra comunidad.</p>
+                        <button class="btn btn-primary" onclick="restartSurvey()">
+                            <i class="fas fa-redo"></i> Completar Otra Encuesta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de categorías -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Categorías <span class="highlight">Disponibles</span></h2>
+                    <p>Diferentes áreas de interés en hardware</p>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Procesadores</h3>
+                        <p>Preguntas sobre CPU, rendimiento y arquitectura</p>
+                    </div>
+                    <div class="category-card">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>Gaming</h3>
+                        <p>Encuestas sobre juegos, FPS y experiencia de usuario</p>
+                    </div>
+                    <div class="category-card">
+                        <i class="fas fa-video"></i>
+                        <h3>Creación de Contenido</h3>
+                        <p>Preguntas para editores, streamers y creadores</p>
+                    </div>
+                    <div class="category-card">
+                        <i class="fas fa-server"></i>
+                        <h3>Profesional</h3>
+                        <p>Encuestas para entornos empresariales y servidores</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>T-Hardia 2025</h3>
+                    <p>La plataforma definitiva para entusiastas del hardware.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Plataforma</h4>
+                    <ul>
+                        <li><a href="hardware-comparison.html">Comparador IA</a></li>
+                        <li><a href="survey.html">Encuestas</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Soporte</h4>
+                    <ul>
+                        <li><a href="#">Ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 T-Hardia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/main.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta - T-Hardia</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
-</head>
-<body>
-    <div class="container">
-        <header class="animated-header">
-            <h1 class="glitch-text">Encuesta de Hardware</h1>
-            <p class="subtitle">Comparte tus preferencias tecnológicas</p>
-        </header>
-        
-        <nav class="main-nav animated-nav">
-            <ul>
-                <li><a href="index.html" class="nav-link">Inicio</a></li>
-                <li><a href="hardware-comparison.html" class="nav-link">Comparar Hardware</a></li>
-                <li><a href="survey.html" class="nav-link active">Encuesta</a></li>
-                <li><a href="blog.html" class="nav-link">Blog</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-        </nav>
-        
-        <main class="main-content">
-            <section class="survey-intro fade-in">
-                <h2>Preguntas sobre Hardware</h2>
-                <p>Responde 5 preguntas aleatorias sobre tus preferencias tecnológicas. Tus respuestas nos ayudan a mejorar nuestro contenido.</p>
-            </section>
-            
-            <section class="survey-questions" id="survey-questions">
-                <div class="loading">Cargando preguntas...</div>
-            </section>
-        </main>
-    </div>
-    
-    <script src="js/main.js"></script>
+    <script>
+        // Reiniciar encuesta
+        function restartSurvey() {
+            document.getElementById('survey-completed').style.display = 'none';
+            document.getElementById('survey-questions').style.display = 'block';
+            document.getElementById('survey-progress').style.display = 'block';
+            loadSurveyQuestions();
+        }
+
+        // Cargar encuesta al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSurveyQuestions();
+        });
+    </script>
 </body>
 </html>
